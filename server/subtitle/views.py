@@ -57,7 +57,7 @@ def search(request):
                     # 获取所有文件名列表
                     file_names = zip_file.namelist()
                     subtitle = file_names[0]
-                fname = Path(subtitle).name
+                fname = Path(subtitle).stem + ".zip"
                 name, ext = os.path.splitext(fname)
                 if '.' in ext:
                     ext = ext[1:]
@@ -88,7 +88,7 @@ def search(request):
     # 在本地路径下搜索, 查找是否存在file相关的字幕文件
     db_files = glob.glob('static/subtitles/*.zip')
     subtitle_file = match_str(db_files, file)
-    # print('file:', file)
+    print('subtitle_file:', subtitle_file)
 
     # 如果找不到匹配的字幕文件，则返回 404 Not Found 响应
     if not subtitle_file:
