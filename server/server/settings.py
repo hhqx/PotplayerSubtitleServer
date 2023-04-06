@@ -25,6 +25,7 @@ SECRET_KEY = 'django-insecure-%b#bbs@iww02&d)6tt^v(&5qe6w1!dirv7xznf%td**_eke108
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '*',
     'potplayer.server.hqx',
 ]
 
