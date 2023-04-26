@@ -39,7 +39,8 @@ string ServerCheck(string User, string Pass)
 }
 string SubtitleDownload(string id)
 {
-	string api = API_URL + "static/subtitles/" + id;
+	// string api = API_URL + "static/subtitles/" + id;
+	string api = API_URL + id;
 	return HostUrlGetString(api);
 }
 array<dictionary> SubtitleSearch_onetest(string MovieFileName, dictionary MovieMetaData)

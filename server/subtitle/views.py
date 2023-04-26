@@ -18,6 +18,9 @@ import os
 from django.conf import settings
 from django.http import HttpResponse
 
+download_base = '/static/subtitles/'
+
+
 
 def subtitle_list(request):
     subtitle_dir = os.path.join(settings.STATICFILES_DIRS[0], 'subtitles')
@@ -37,6 +40,8 @@ def subtitle_list(request):
 def search(request):
     # 获取查询参数
     file = request.GET.get('file', '')
+    def get_down_load_url(name):
+        return f'subtitle/download?file={name}'
 
     def list_to_xml(lst):
         n = len(lst)
@@ -61,7 +66,7 @@ def search(request):
                 name, ext = os.path.splitext(fname)
                 if '.' in ext:
                     ext = ext[1:]
-                pid, title, fmt = fname, name, ext
+                pid, title, fmt = get_down_load_url(fname), name, ext
             else:
                 pid, title, fmt = "null", "not found", "null"
             content += tpl.format(pid, title, fmt)
@@ -85,6 +90,7 @@ def search(request):
             ans = ["Not Found"]
         # print("Match Results:", s, ans)
         return ans
+
     # 在本地路径下搜索, 查找是否存在file相关的字幕文件
     db_files = glob.glob('static/subtitles/*.zip')
     subtitle_file = match_str(db_files, file)
@@ -119,7 +125,13 @@ def download_subtitle(request):
     if not os.path.exists(filepath):
         return HttpResponseNotFound()
 
-    return redirect('/static/subtitles/' + file)
+    def get_file(file_path):
+        # 使用 FileResponse 读取文件并返回
+        response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=Path(file_path).name)
+        return response
+
+    return get_file(filepath)
+    # return redirect(download_base + file)
 
 
 @csrf_exempt

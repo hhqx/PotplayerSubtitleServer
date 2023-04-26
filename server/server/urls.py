@@ -15,11 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.shortcuts import redirect
+from django.urls import path, include, reverse
 from django.conf.urls.static import static
 from server import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('subtitle/', include('subtitle.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    # path('', lambda request: redirect('/subtitle/', permanent=True)),
+    path('admin/', admin.site.urls, name='admin'),
+    path('subtitle/', include('subtitle.urls'), name='subtitle'),
+]
